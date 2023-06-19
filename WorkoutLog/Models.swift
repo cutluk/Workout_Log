@@ -5,7 +5,7 @@ import IdentifiedCollections
 struct Workout: Equatable, Identifiable, Codable {
   let id: Tagged<Self, UUID>
   var lifts: IdentifiedArrayOf<Lift> = []
-  var theme: Theme = .bubblegum
+  var theme: Theme = .blue
   var title = ""
   var date: Date
 }
@@ -28,31 +28,27 @@ struct AlertItem: Identifiable {
 }
 
 enum Theme: String, CaseIterable, Equatable, Hashable, Identifiable, Codable {
-  case bubblegum
-  case buttercup
-  case indigo
-  case lavender
-  case magenta
-  case navy
-  case orange
-  case oxblood
-  case periwinkle
-  case poppy
-  case purple
-  case seafoam
-  case sky
-  case tan
-  case teal
-  case yellow
+    case red
+    case orange
+    case yellow
+    case mint
+    case green
+    case teal
+    case blue
+    case cyan
+    case indigo
+    case purple
+    case pink
+    case brown
+    case black
 
   var id: Self { self }
 
   var accentColor: Color {
     switch self {
-    case .sky, .buttercup, .lavender, .orange, .periwinkle, .poppy, .seafoam, .bubblegum, .tan,
-        .teal, .yellow:
-      return .black
-    case .indigo, .magenta, .navy, .oxblood, .purple:
+    case .red, .orange, .yellow, .mint, .green, .teal, .blue, .cyan, .pink, .brown, .purple:
+        return .black
+    case .black, .indigo:
       return .white
     }
   }
@@ -79,7 +75,7 @@ extension Workout {
       Lift(id: Lift.ID(UUID()), name: "One Hand Tricep", reps: "3x10", weight: "25", complete: false),
       Lift(id: Lift.ID(UUID()), name: "Crunch Rope", reps: "3x10", weight: "52.5", complete: false)
     ],
-    theme: .sky,
+    theme: .blue,
     title: "All Upper Body",
     date: Date()
   )

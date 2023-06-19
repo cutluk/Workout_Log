@@ -107,7 +107,7 @@ final class WorkoutsListModel: ObservableObject {
                         Lift(id: Lift.ID(UUID()), name: "Sumo Squats", reps: "3x10", weight: "70", complete: false),
                         Lift(id: Lift.ID(UUID()), name: "Deficit Reverse Lunges", reps: "3x10", weight: "40", complete: false)
                      ],
-                     theme: .poppy,
+                     theme: .red,
                      title: "Legs",
                      date: Date()),
             
@@ -159,7 +159,7 @@ final class WorkoutsListModel: ObservableObject {
                         Lift(id: Lift.ID(UUID()), name: "Dumbbell Shrug", reps: "3x10", weight: "50", complete: false),
                         Lift(id: Lift.ID(UUID()), name: "Rear Back Cable Pulls", reps: "3x20", weight: "12.5", complete: false)
                      ],
-                     theme: .sky,
+                     theme: .blue,
                      title: "Back and Bis",
                      date: Date()),
             
