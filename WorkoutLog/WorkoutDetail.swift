@@ -93,6 +93,14 @@ extension AlertState where Action == WorkoutDetailModel.AlertAction{
     )
 }
 
+struct GreyButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding()
+            .background(configuration.isPressed ? Color.gray.opacity(0.5) : Color.clear)
+    }
+}
+
 struct WorkoutDetailView: View {
     @ObservedObject var model: WorkoutDetailModel
     
@@ -104,11 +112,16 @@ struct WorkoutDetailView: View {
                         ForEach(self.$model.workout.lifts) { $lift in
                             if !lift.complete {
                                 Button {
-                                    self.model.completeLift($lift.complete)
+                                    withAnimation{
+                                        self.model.completeLift($lift.complete)
+                                    }
                                 } label: {
                                     HStack {
-                                        Image(systemName: "circle").onTapGesture {
-                                            self.model.completeLift($lift.complete)
+                                        Image(systemName: "circle")
+                                            .onTapGesture {
+                                            withAnimation{
+                                                self.model.completeLift($lift.complete)
+                                            }
                                         }
                                         
                                         Text(lift.name)
@@ -130,8 +143,9 @@ struct WorkoutDetailView: View {
                                         }
                                     }
                                     .padding(.trailing, -15.0)
-
+                                   
                                 }
+                                
                             }
                         }
                         .onDelete { indices in
@@ -146,7 +160,9 @@ struct WorkoutDetailView: View {
                         if lift.complete{
                             Button {
                                // self.model.liftTapping(lift)
-                                self.model.completeLift($lift.complete)
+                                withAnimation{
+                                    self.model.completeLift($lift.complete)
+                                }
                             } label: {
                                 HStack {
                                     Image(systemName: "checkmark")
@@ -156,13 +172,21 @@ struct WorkoutDetailView: View {
                                     Text(lift.name).foregroundColor(.primary)
                                     Spacer()
                                     Text(lift.reps).foregroundColor(.primary)
-                                        //.padding(.trailing, 10.0)
-                                    Text(" ")
-                                    Text(lift.weight).foregroundColor(.primary)
-                                        .frame(width: 50)
+                                    //.padding(.trailing, 10.0)
+                                    if lift.weight.count <= 5 {
+                                        Text(lift.weight)
+                                            .foregroundColor(.primary)
+                                            .frame(width: 70)
+                                    } else {
+                                        Text(lift.weight)
+                                            .foregroundColor(.primary)
+                                            .frame(width: 110)
+                                    }
                                 }
+                                .padding(.trailing, -15.0)
+                         
                             }
-                            .padding(.trailing, -15.0)
+                          
                         }
                     }
                     .onDelete { indices in
@@ -176,10 +200,13 @@ struct WorkoutDetailView: View {
                 Button("Finish Workout") {
                     let currentDate = Date() // Get the current date
                     self.model.workout.date = currentDate
-                    self.model.finishButtonTapped()
+                    withAnimation{
+                        self.model.finishButtonTapped()
+                    }
                 }
                 .foregroundColor(.blue)
                 .frame(maxWidth: .infinity)
+                
             }
             
 //            Section {
