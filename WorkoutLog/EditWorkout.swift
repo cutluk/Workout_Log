@@ -72,6 +72,8 @@ struct EditWorkoutView: View {
           // Allows for cursor to automatically go where it needs to
           //  .focused(self.$focus, equals: .title)
           ThemePicker(selection: self.$model.workout.theme)
+              
+              
       } header: {
         Text("Workout Info")
       }
@@ -121,6 +123,7 @@ struct ThemePicker: View {
             .padding(4)
         }
         .foregroundColor(theme.accentColor)
+        .background(theme.mainColor)
         .fixedSize(horizontal: false, vertical: true)
         .tag(theme)
       }

@@ -65,6 +65,7 @@ extension Workout {
     lifts: [
       Lift(id: Lift.ID(UUID()), name: "Push-Ups", reps: "3x12", weight: "", complete: false),
       Lift(id: Lift.ID(UUID()), name: "Chest Press", reps: "3x(10x9x9)", weight: "80", complete: false),
+      Lift(id: Lift.ID(UUID()), name: "Bench", reps: "3x(10x10x6)", weight: "180x192x204", complete: false),
       Lift(id: Lift.ID(UUID()), name: "Alt Bicep Curls", reps: "3x10", weight: "40", complete: false),
       Lift(id: Lift.ID(UUID()), name: "Shoulder Press", reps: "3x10", weight: "50", complete: false),
       Lift(id: Lift.ID(UUID()), name: "Chest Fly", reps: "3x10", weight: "150", complete: false),

@@ -110,17 +110,27 @@ struct WorkoutDetailView: View {
                                         Image(systemName: "circle").onTapGesture {
                                             self.model.completeLift($lift.complete)
                                         }
+                                        
                                         Text(lift.name)
                                             .foregroundColor(.primary)
+                                        
                                         Spacer()
+                                        
                                         Text(lift.reps)
                                             .foregroundColor(.primary)
-                                        Text(" ")
-                                        Text(lift.weight)
-                                            .foregroundColor(.primary)
-                                            .frame(width: 50)
+                                        
+                                        if lift.weight.count <= 5 {
+                                            Text(lift.weight)
+                                                .foregroundColor(.primary)
+                                                .frame(width: 70)
+                                        } else {
+                                            Text(lift.weight)
+                                                .foregroundColor(.primary)
+                                                .frame(width: 110)
+                                        }
                                     }
                                     .padding(.trailing, -15.0)
+
                                 }
                             }
                         }
