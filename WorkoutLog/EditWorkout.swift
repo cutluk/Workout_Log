@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftUINavigation
 import XCTestDynamicOverlay
 
-class EditWorkoutModel: ObservableObject {
+final class EditWorkoutModel: ObservableObject {
     @Published var focus: EditWorkoutView.Field?
     @Published var workout: Workout
     

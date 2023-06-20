@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftUINavigation
 import XCTestDynamicOverlay
 
-class WorkoutDetailModel: ObservableObject {
+final class WorkoutDetailModel: ObservableObject {
     @Published var destination: Destination?
     @Published var workout: Workout
     
