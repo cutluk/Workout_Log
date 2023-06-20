@@ -13,7 +13,7 @@ final class WorkoutsListModel: ObservableObject {
     }
     @Published var alertItem: AlertItem?
     
-    private var destinationCancellable: AnyCancellable?
+    private var destinationCancellable: AnyCancellable? // nevwild - HMMMMMM Deep useful rabbit hole here
     private var cancellables: Set<AnyCancellable> = []
     
     // switch allowing to go to different pages
@@ -45,6 +45,7 @@ final class WorkoutsListModel: ObservableObject {
 //                from: Data(contentsOf: .workouts))
 //          }catch{
 //              // TODO: alert
+          // nevwild - How do you handle an error?
 //          }
           
           
@@ -56,18 +57,20 @@ final class WorkoutsListModel: ObservableObject {
                       self.workouts = try loadWorkoutsFromDisk()
                   } catch {
                       // TODO: Handle error
+                      // nevwild - How do you handle an error?
                   }
                   
           
     
           self.$workouts
               .dropFirst()
-              .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
+              .debounce(for: .seconds(1), scheduler: DispatchQueue.main) // nevwild - Why?
               .sink { workouts in
                   do {
                       try JSONEncoder().encode(workouts).write(to: .workouts)
                   } catch {
                       // TODO: alert
+                      // nevwild - How do you handle an error?
                   }
               }
               .store(in: &self.cancellables)
@@ -95,73 +98,318 @@ final class WorkoutsListModel: ObservableObject {
            print("Populating Data")
            // Create initial data
            let initialWorkouts: [Workout] = [
-            Workout( id: Workout.ID(UUID()),
-                     lifts: [
-                        Lift(id: Lift.ID(UUID()), name: "Squats", reps: "3x10", weight: "205", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Calve Raise", reps: "315", weight: "225", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Weighted Lunges", reps: "3x10", weight: "60", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Hip Thrusts", reps: "3x10", weight: "80", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Elevated Heel Squat", reps: "3x10", weight: "65", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Leg Raises", reps: "3x10", weight: "204", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Leg Press", reps: "3x10", weight: "180", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Sumo Squats", reps: "3x10", weight: "70", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Deficit Reverse Lunges", reps: "3x10", weight: "40", complete: false)
-                     ],
-                     theme: .red,
-                     title: "Legs",
-                     date: Date()),
+            Workout(
+                id: Workout.ID(UUID()),
+                lifts: [
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Squats",
+                        reps: "3x10",
+                        weight: "205",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Calve Raise",
+                        reps: "315",
+                        weight: "225",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Weighted Lunges",
+                        reps: "3x10",
+                        weight: "60",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Hip Thrusts",
+                        reps: "3x10",
+                        weight: "80",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Elevated Heel Squat",
+                        reps: "3x10",
+                        weight: "65",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Leg Raises",
+                        reps: "3x10",
+                        weight: "204",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Leg Press",
+                        reps: "3x10",
+                        weight: "180",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Sumo Squats",
+                        reps: "3x10",
+                        weight: "70",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Deficit Reverse Lunges",
+                        reps: "3x10",
+                        weight: "40",
+                        complete: false
+                    )
+                ],
+                theme: .red,
+                title: "Legs",
+                date: Date()
+            ),
             
-            Workout( id: Workout.ID(UUID()),
-                     lifts: [
-                       Lift(id: Lift.ID(UUID()), name: "Push-Ups", reps: "3x12", weight: "", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Chest Press", reps: "3x(10x9x9)", weight: "80", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Alt Bicep Curls", reps: "3x10", weight: "40", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Shoulder Press", reps: "3x10", weight: "50", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Chest Fly", reps: "3x10", weight: "150", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Hammer Curls", reps: "3x(10x10x6)", weight: "40", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Lateral Raises", reps: "3x10", weight: "25", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Tri-extension single arm", reps: "3x10", weight: "25", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Tri Push Down Bar", reps: "3x10", weight: "72.5", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "One Hand Tricep", reps: "3x10", weight: "25", complete: false),
-                       Lift(id: Lift.ID(UUID()), name: "Crunch Rope", reps: "3x10", weight: "52.5", complete: false)
-                     ],
-                     theme: .orange,
-                     title: "All Upper Body",
-                     date: Date()),
+            Workout(
+                id: Workout.ID(UUID()),
+                lifts: [
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Push-Ups",
+                        reps: "3x12",
+                        weight: "",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Chest Press",
+                        reps: "3x(10x9x9)",
+                        weight: "80",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Alt Bicep Curls",
+                        reps: "3x10",
+                        weight: "40",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Shoulder Press",
+                        reps: "3x10",
+                        weight: "50",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Chest Fly",
+                        reps: "3x10",
+                        weight: "150",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Hammer Curls",
+                        reps: "3x(10x10x6)",
+                        weight: "40",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Lateral Raises",
+                        reps: "3x10",
+                        weight: "25",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Tri-extension single arm",
+                        reps: "3x10",
+                        weight: "25",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Tri Push Down Bar",
+                        reps: "3x10",
+                        weight: "72.5",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "One Hand Tricep",
+                        reps: "3x10",
+                        weight: "25",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Crunch Rope",
+                        reps: "3x10",
+                        weight: "52.5",
+                        complete: false
+                    )
+                ],
+                theme: .orange,
+                title: "All Upper Body",
+                date: Date()
+            ),
             
-            Workout( id: Workout.ID(UUID()),
-                     lifts: [
-                        Lift(id: Lift.ID(UUID()), name: "Push-Ups", reps: "3x12", weight: "", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Bench", reps: "3x(10x10x6)", weight: "180x192x204", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Shoulder Press", reps: "3x10", weight: "50", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Suitcases", reps: "3x10", weight: "50", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Incline Bench Press", reps: "3x10", weight: "156", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Lateral Raises", reps: "3x10", weight: "25", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Tricep Skull Crushers", reps: "3x10", weight: "50", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Chest Fly", reps: "3x10", weight: "155", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Tricep Cable Pulls", reps: "3x15", weight: "52.5", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "One Hand Tricep", reps: "3x10", weight: "25", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Crunch Rope", reps: "3x10", weight: "52.5", complete: false)
-                     ],
-                     theme: .teal,
-                     title: "Shoulders, Chest, Tris",
-                     date: Date()),
+            Workout(
+                id: Workout.ID(UUID()),
+                lifts: [
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Push-Ups",
+                        reps: "3x12",
+                        weight: "",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Bench",
+                        reps: "3x(10x10x6)",
+                        weight: "180x192x204",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Shoulder Press",
+                        reps: "3x10",
+                        weight: "50",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Suitcases",
+                        reps: "3x10",
+                        weight: "50",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Incline Bench Press",
+                        reps: "3x10",
+                        weight: "156",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Lateral Raises",
+                        reps: "3x10",
+                        weight: "25",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Tricep Skull Crushers",
+                        reps: "3x10",
+                        weight: "50",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Chest Fly",
+                        reps: "3x10",
+                        weight: "155",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Tricep Cable Pulls",
+                        reps: "3x15",
+                        weight: "52.5",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "One Hand Tricep",
+                        reps: "3x10",
+                        weight: "25",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Crunch Rope",
+                        reps: "3x10",
+                        weight: "52.5",
+                        complete: false
+                    )
+                ],
+                theme: .teal,
+                title: "Shoulders, Chest, Tris",
+                date: Date()),
             
-            Workout( id: Workout.ID(UUID()),
-                     lifts: [
-                        Lift(id: Lift.ID(UUID()), name: "Pull-Ups", reps: "3x8", weight: "", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Hammer Curls", reps: "3x10", weight: "40", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Lat Pull Downs", reps: "3x10", weight: "132", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Rows", reps: "3x10", weight: "120", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Alt Bicep Curls", reps: "3x10", weight: "40", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Bent Over Rows", reps: "3x10", weight: "65", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Wide Bicep Curls", reps: "3x10", weight: "30", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Dumbbell Shrug", reps: "3x10", weight: "50", complete: false),
-                        Lift(id: Lift.ID(UUID()), name: "Rear Back Cable Pulls", reps: "3x20", weight: "12.5", complete: false)
-                     ],
-                     theme: .blue,
-                     title: "Back and Bis",
-                     date: Date()),
+            Workout(
+                id: Workout.ID(UUID()),
+                lifts: [
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Pull-Ups",
+                        reps: "3x8",
+                        weight: "",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Hammer Curls",
+                        reps: "3x10",
+                        weight: "40",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Lat Pull Downs",
+                        reps: "3x10",
+                        weight: "132",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Rows",
+                        reps: "3x10",
+                        weight: "120",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Alt Bicep Curls",
+                        reps: "3x10",
+                        weight: "40",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Bent Over Rows",
+                        reps: "3x10",
+                        weight: "65",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Wide Bicep Curls",
+                        reps: "3x10",
+                        weight: "30",
+                        complete: false
+                    ),
+                    Lift(
+                        id: Lift.ID(UUID()),
+                        name: "Dumbbell Shrug",
+                        reps: "3x10",
+                        weight: "50",
+                        complete: false
+                    ),
+                    Lift(id: Lift.ID(UUID()), name: "Rear Back Cable Pulls", reps: "3x20", weight: "12.5", complete: false)
+//                    Lift(
+//                        name: ,
+//                        reps: ,
+//                        weight:
+//                    )
+                ],
+                theme: .blue,
+                title: "Back and Bis",
+                date: Date()),
             
             
            ]
@@ -172,6 +420,8 @@ final class WorkoutsListModel: ObservableObject {
                try jsonData.write(to: URL.workouts)
            } catch {
                // TODO: Handle error
+               // nevwild - How do you handle an error?
+               print(error, #file, #function, #line)
            }
        }
        
