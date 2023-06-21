@@ -206,7 +206,7 @@ struct WorkoutDetailView: View {
                         model.finishButtonTapped()
                     }
                     isButtonPressed = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.20) {
                        isButtonPressed = false
                    }
                 }) {
