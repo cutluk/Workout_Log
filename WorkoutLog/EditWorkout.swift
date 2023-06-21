@@ -44,14 +44,7 @@ class EditWorkoutModel: ObservableObject {
         self.workout.lifts.append(lift)
         self.focus = .lift(lift.id)
     }
-    
-    func deleteButtonTapped(){
-        
-    }
-    
-    
-    }
-
+}
 
 struct EditWorkoutView: View {
     enum Field: Hashable {
@@ -60,9 +53,8 @@ struct EditWorkoutView: View {
     }
     
   @FocusState var focus: Field?
-//  @Binding var workout: Workout
+
   @ObservedObject var model: EditWorkoutModel
-//    @ObservedObject var detailModel: WorkoutDetailModel
     
   var body: some View {
     Form {
@@ -72,8 +64,6 @@ struct EditWorkoutView: View {
           // Allows for cursor to automatically go where it needs to
           //  .focused(self.$focus, equals: .title)
           ThemePicker(selection: self.$model.workout.theme)
-              
-              
       } header: {
         Text("Workout Info")
       }
@@ -87,14 +77,12 @@ struct EditWorkoutView: View {
                       .frame(width: 80.0)
                     
                   TextField("Weight", text: $lift.weight)
-                      
               }
           }
-
-        .onDelete { indices in
+          .onDelete { indices in
             self.model
                 .deleteLifts(atOffsets: indices)
-        }
+          }
 
         Button("New lift") {
             self.model.addLiftButtonTapped()
@@ -107,8 +95,6 @@ struct EditWorkoutView: View {
     .bind(self.$model.focus, to: self.$focus)
   }
 }
-
-
 
 struct ThemePicker: View {
   @Binding var selection: Theme

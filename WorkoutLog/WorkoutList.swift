@@ -26,41 +26,22 @@ final class WorkoutsListModel: ObservableObject {
     // Initializer
       init(
         destination: Destination? = nil
-//        workouts: IdentifiedArrayOf<Workout> = []
-        //changes on video #218 19:20
       ) {
         self.destination = destination
         self.workouts = []
           
   // Check if the data file exists
          if !checkDataFileExists() {
-             // File doesn't exist, populate with initial data
              populateInitialData()
          }
-                 
-//          // Load Workouts from disk
-//          do {
-//              self.workouts = try JSONDecoder().decode(
-//                IdentifiedArray.self,
-//                from: Data(contentsOf: .workouts))
-//          }catch{
-//              // TODO: alert
-//          }
-          
-          
-          
-          
-          
-          
+
           // Load Workouts from disk
-                  do {
-                      self.workouts = try loadWorkoutsFromDisk()
-                  } catch {
-                      // TODO: Handle error
-                  }
-                  
+          do {
+              self.workouts = try loadWorkoutsFromDisk()
+          } catch {
+              // TODO: Handle error
+          }
           
-    
           self.$workouts
               .dropFirst()
               .debounce(for: .seconds(1), scheduler: DispatchQueue.main)
@@ -75,15 +56,6 @@ final class WorkoutsListModel: ObservableObject {
           
         self.bind()
       }
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     // Check if the data file exists
        private func checkDataFileExists() -> Bool {
@@ -163,8 +135,6 @@ final class WorkoutsListModel: ObservableObject {
                      theme: .blue,
                      title: "Back and Bis",
                      date: Date()),
-            
-            
            ]
            
            // Save initial data to the data file
@@ -182,17 +152,6 @@ final class WorkoutsListModel: ObservableObject {
            let workouts = try JSONDecoder().decode(IdentifiedArrayOf<Workout>.self, from: jsonData)
            return workouts
        }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     // Navigate to the add screen
     func addWorkoutButtonTapped() {
@@ -243,7 +202,6 @@ final class WorkoutsListModel: ObservableObject {
             self.alertItem = confirmDelete
         }
 
-    
     private func bind() {
         switch self.destination{
         case let .detail(workoutDetailModel):
@@ -267,9 +225,6 @@ final class WorkoutsListModel: ObservableObject {
         }
     }
 }
-
-
-
 
 struct WorkoutsList: View {
   @ObservedObject var model: WorkoutsListModel

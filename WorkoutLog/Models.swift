@@ -58,7 +58,6 @@ enum Theme: String, CaseIterable, Equatable, Hashable, Identifiable, Codable {
   var name: String { self.rawValue.capitalized }
 }
 
-
 extension Workout {
   static let mock = Self(
     id: Workout.ID(UUID()),

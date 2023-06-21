@@ -17,12 +17,8 @@ class WorkoutDetailModel: ObservableObject {
     unimplemented("WorkoutDetailModel.onConfirmDeletion")
     
     enum Destination {
-        case alert(AlertState<AlertAction>)
         case edit(EditWorkoutModel)
         case lift(Lift)
-    }
-    enum AlertAction{
-        case confirmDeletion
     }
     
     init(
@@ -40,21 +36,9 @@ class WorkoutDetailModel: ObservableObject {
         self.destination = .lift(lift)
     }
     
-    func deleteButtonTapped(){
-        self.destination = .alert(.delete)
-    }
-    
     func finishButtonTapped() {
         for liftIndex in self.workout.lifts.indices {
             self.workout.lifts[liftIndex].complete = false
-        }
-    }
-
-    
-    func alertButtonTapped(_ action: AlertAction){
-        switch action {
-        case .confirmDeletion:
-            self.onConfirmDeletion()
         }
     }
     
@@ -78,19 +62,6 @@ class WorkoutDetailModel: ObservableObject {
         value.wrappedValue.toggle()
     }
     
-  
-}
-
-extension AlertState where Action == WorkoutDetailModel.AlertAction{
-    static let delete = AlertState(
-        title: TextState("Delete"),
-        message: TextState("Are you sure you want to delete this lift?"),
-        buttons: [
-            .destructive(TextState("Yes"), action:
-                    .send(.confirmDeletion)),
-            .cancel(TextState("Cancel"))
-        ]
-    )
 }
 
 struct GreyButtonStyle: ButtonStyle {
@@ -145,9 +116,7 @@ struct WorkoutDetailView: View {
                                         }
                                     }
                                     .padding(.trailing, -15.0)
-                                   
                                 }
-                                
                             }
                         }
                         .onDelete { indices in
@@ -161,7 +130,6 @@ struct WorkoutDetailView: View {
                     ForEach(self.$model.workout.lifts) { $lift in
                         if lift.complete{
                             Button {
-                               // self.model.liftTapping(lift)
                                 withAnimation{
                                     self.model.completeLift($lift.complete)
                                 }
@@ -186,9 +154,7 @@ struct WorkoutDetailView: View {
                                     }
                                 }
                                 .padding(.trailing, -15.0)
-                         
                             }
-                          
                         }
                     }
                     .onDelete { indices in
@@ -217,14 +183,6 @@ struct WorkoutDetailView: View {
                 .listRowBackground(isButtonPressed ? Color.gray : Color.blue)
                 
             }
-            
-//            Section {
-//                Button("Delete Workout") {
-//                    self.model.deleteButtonTapped()
-//                }
-//                .foregroundColor(.red)
-//                .frame(maxWidth: .infinity)
-//            }
         }
         .navigationTitle(self.model.workout.title)
         .toolbar {
@@ -232,18 +190,15 @@ struct WorkoutDetailView: View {
                 self.model.editButtonTapped()
             }
         }
-        .navigationDestination(
-            unwrapping: self.$model.destination,
-            case: /WorkoutDetailModel.Destination.lift
-        ){ $lift in
-            LiftView(lift: lift, workout: self.model.workout)
-        }
-        .alert(
-            unwrapping: self.$model.destination,
-            case: /WorkoutDetailModel.Destination.alert
-        ) { action in
-            self.model.alertButtonTapped(action)
-        }
+        
+// If you want to add navigation into the lift itself
+        
+//        .navigationDestination(
+//            unwrapping: self.$model.destination,
+//            case: /WorkoutDetailModel.Destination.lift
+//        ){ $lift in
+//            LiftView(lift: lift, workout: self.model.workout)
+//        }
         .sheet (
             unwrapping: self.$model.destination,
             case: /WorkoutDetailModel.Destination.edit
@@ -269,35 +224,35 @@ struct WorkoutDetailView: View {
 }
 
 // Drill down next page for when a past lift is Clicked
-// This is where you would edit workouts
-struct LiftView: View {
-  let lift: Lift
-  let workout: Workout
-
-  var body: some View {
-    ScrollView {
-      VStack(alignment: .leading) {
-        Divider()
-          .padding(.bottom)
-        Text("Name")
-          .font(.headline)
-          Text(self.lift.name)
-        Text("Reps")
-          .font(.headline)
-          .padding(.top)
-          Text(self.lift.reps)
-        Text("Weight")
-          .font(.headline)
-          .padding(.top)
-        Text(self.lift.weight)
-      }
-    }
-    .navigationTitle(
-      Text(self.lift.name)
-    )
-    .padding()
-  }
-}
+// This is where you would edit workouts (not used)
+//struct LiftView: View {
+//  let lift: Lift
+//  let workout: Workout
+//
+//  var body: some View {
+//    ScrollView {
+//      VStack(alignment: .leading) {
+//        Divider()
+//          .padding(.bottom)
+//        Text("Name")
+//          .font(.headline)
+//          Text(self.lift.name)
+//        Text("Reps")
+//          .font(.headline)
+//          .padding(.top)
+//          Text(self.lift.reps)
+//        Text("Weight")
+//          .font(.headline)
+//          .padding(.top)
+//        Text(self.lift.weight)
+//      }
+//    }
+//    .navigationTitle(
+//      Text(self.lift.name)
+//    )
+//    .padding()
+//  }
+//}
 
 struct WorkoutDetail_Previews: PreviewProvider {
     static var previews: some View {
