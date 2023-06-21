@@ -51,6 +51,7 @@ final class WorkoutsListModel: ObservableObject {
           
           
           
+          
           // Load Workouts from disk
                   do {
                       self.workouts = try loadWorkoutsFromDisk()
