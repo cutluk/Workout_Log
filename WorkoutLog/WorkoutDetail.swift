@@ -104,6 +104,8 @@ struct GreyButtonStyle: ButtonStyle {
 struct WorkoutDetailView: View {
     @ObservedObject var model: WorkoutDetailModel
     
+    @State private var isButtonPressed = false
+
     var body: some View {
         List {
             if !self.model.workout.lifts.isEmpty {
@@ -197,15 +199,22 @@ struct WorkoutDetailView: View {
                 }
             }
             Section {
-                Button("Finish Workout") {
+                Button(action: {
                     let currentDate = Date() // Get the current date
-                    self.model.workout.date = currentDate
-                    withAnimation{
-                        self.model.finishButtonTapped()
+                    model.workout.date = currentDate
+                    withAnimation {
+                        model.finishButtonTapped()
                     }
+                    isButtonPressed = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                       isButtonPressed = false
+                   }
+                }) {
+                    Text("Finish Workout")
+                        .foregroundColor(.white)
                 }
-                .foregroundColor(.blue)
                 .frame(maxWidth: .infinity)
+                .listRowBackground(isButtonPressed ? Color.gray : Color.blue)
                 
             }
             
