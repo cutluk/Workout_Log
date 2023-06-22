@@ -80,7 +80,7 @@ final class WorkoutsListModel: ObservableObject {
                         Lift(id: Lift.ID(UUID()), name: "Sumo Squats", reps: "3x10", weight: "70", complete: false),
                         Lift(id: Lift.ID(UUID()), name: "Deficit Reverse Lunges", reps: "3x10", weight: "40", complete: false)
                      ],
-                     theme: .red,
+                     theme: .pink,
                      title: "Legs",
                      date: Date()),
             
